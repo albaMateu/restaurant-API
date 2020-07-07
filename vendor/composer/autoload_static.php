@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
+class ComposerStaticInit1253477f8a0cb66b42e1e7f91a1bdd6d
 {
     public static $files = array (
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
     );
 
@@ -14,6 +15,7 @@ class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
         'S' => 
         array (
             'Slim\\Tests\\' => 11,
+            'Slim\\Psr7\\' => 10,
             'Slim\\' => 5,
         ),
         'P' => 
@@ -24,6 +26,7 @@ class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
         ),
         'F' => 
         array (
+            'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
         ),
     );
@@ -32,6 +35,10 @@ class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
         'Slim\\Tests\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/tests',
+        ),
+        'Slim\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/psr7/src',
         ),
         'Slim\\' => 
         array (
@@ -44,12 +51,16 @@ class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Fig\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fig/http-message-util/src',
         ),
         'FastRoute\\' => 
         array (
@@ -64,9 +75,9 @@ class ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit01c2ebed246cb67053c6a4aa2ade665b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1253477f8a0cb66b42e1e7f91a1bdd6d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1253477f8a0cb66b42e1e7f91a1bdd6d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1253477f8a0cb66b42e1e7f91a1bdd6d::$classMap;
 
         }, null, ClassLoader::class);
     }
