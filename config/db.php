@@ -2,17 +2,15 @@
 
     require_once "config.php";
 
-    class DataBase{
-        public static $db;
+    function getConnection(){
+        $db=new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        
+        if ($db->connect_error) {
+            error_log(date("d-m-Y H:i:s"). $db->connect_errno. ":".$db->connect_error."\n", 3, "C:/xampp/htdocs/Restaurant-API/logs/errors.log");
+            die('Error de conexión: ' . $db->connect_error);
+        }
 
-        static function connect(){
-            $con= new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-            if($con->connect_errno){
-                echo "Error connexió";
-            }
-            
-            return $con;
-        }    
+        return $db;
     }
 
     

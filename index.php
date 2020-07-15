@@ -3,11 +3,20 @@
 	use Psr\Http\Message\ServerRequestInterface as Request;
 	use Slim\Factory\AppFactory;
 	use Slim\Exception\NotFoundException;
+
+	//CORS
+	header("Access-Control-Allow-Origin: *");
+	header('Access-Control-Allow-Credentials: true');
+	header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
+	header("Access-Control-Allow-Headers: X-Requested-With");
+	header('Content-Type: text/html; charset=utf-8');
+	header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');
 	
 	require __DIR__ . '/vendor/autoload.php';
 	require_once "config/db.php";
 
-	$db= DataBase::connect();
+	//funcions
+	require "functions/sales.php";
 	
 	// Instantiate App
 	$app = AppFactory::create();
@@ -33,25 +42,8 @@
 		return $response;		
 	});
 	
-	$app->get("/salas", function(Request $request, Response $response) use ($db, $app){
-		$sql= "SELECT * FROM sala ORDER BY id DESC;";
-		$query= $db->query($sql);
-	
-		//crear una array de obejtos a partir del resultado de la query
-		$productos= array();
-		while ($producto =$query->fetch_assoc()) {
-			$productos[]=$producto;
-		}
-	
-		$result = array(
-			'status'=>'success',
-			'code' => 200,
-			'data' => $productos
-		);	
-
-		$response->getBody()->write(json_encode($result));
-		return $response;
-	});
+	//routing
+	$app->get("/sales", 'getSales');
 	
 
 	$app->run();
