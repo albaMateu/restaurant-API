@@ -14,7 +14,7 @@ function getSales (Request $request, Response $response){
     $query=$stmt->get_result();
     /*$query=$db->query($sql); */
 
-    var_dump($stmt->sqlstate);
+    //var_dump($stmt->sqlstate);
 
     if (!$query) {
         echo "Falló la ejecución: (" . $stmt->errno . ") " . $stmt->error;        
@@ -31,19 +31,21 @@ function getSales (Request $request, Response $response){
     $db=null;
 
     //crear una array de obejtos a partir del resultado de la query
-    $productos= array();
-    while ($producto =$query->fetch_assoc()) {
-        $productos[]=$producto;
+    $sales= array();
+    while ($sala =$query->fetch_assoc()) {
+        $sales[]=$sala;
     }
 
     $result = array(
         'status'=>'success',
         'code' => 200,
-        'data' => $productos
+        'data' => $sales
     );	
 
     $response->getBody()->write(json_encode($result));
+
     return $response;
+    
 }
 
 ?>
