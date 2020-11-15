@@ -4,116 +4,71 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit59f2bcc723f88269c3fc4e2c386c7d26
+class ComposerStaticInitf5b11f3be545262b98017751a837403a
 {
     public static $files = array (
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
-        'b33e3d135e5d9e47d845c576147bda89' => __DIR__ . '/..' . '/php-di/php-di/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
-            'Slim\\Psr7\\' => 10,
-            'Slim\\Http\\' => 10,
             'Slim\\' => 5,
         ),
         'P' => 
         array (
-            'Psr\\Log\\' => 8,
-            'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
-            'PhpDocReader\\' => 13,
-        ),
-        'O' => 
-        array (
-            'Opis\\Closure\\' => 13,
         ),
         'I' => 
         array (
-            'Invoker\\' => 8,
+            'Interop\\Container\\' => 18,
         ),
         'F' => 
         array (
-            'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
-        ),
-        'D' => 
-        array (
-            'DI\\' => 3,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Slim\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/slim/psr7/src',
-        ),
-        'Slim\\Http\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/slim/http/src',
-        ),
         'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
         ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
-        'Psr\\Http\\Server\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
-            1 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
-        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'PhpDocReader\\' => 
+        'Interop\\Container\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-di/phpdoc-reader/src/PhpDocReader',
-        ),
-        'Opis\\Closure\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/opis/closure/src',
-        ),
-        'Invoker\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-di/invoker/src',
-        ),
-        'Fig\\Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/fig/http-message-util/src',
+            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
-        'DI\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-di/php-di/src',
-        ),
     );
 
-    public static $classMap = array (
-        'PiramideUploader' => __DIR__ . '/../..' . '/piramide-uploader/PiramideUploader.php',
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit59f2bcc723f88269c3fc4e2c386c7d26::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit59f2bcc723f88269c3fc4e2c386c7d26::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit59f2bcc723f88269c3fc4e2c386c7d26::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf5b11f3be545262b98017751a837403a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf5b11f3be545262b98017751a837403a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf5b11f3be545262b98017751a837403a::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
