@@ -107,8 +107,39 @@ $app-> get ('/reserva/{id}', function(Request $request, Response $response){
 // POST crear reserva
 
 $app-> post ('/reserva/nova', function(Request $request, Response $response) use ($app){
-     /* $post= file_get_contents('php://input');
-     print_r($post); */
+    $post= file_get_contents('php://input');
+    // $post=$request->getBody('json');
+    //print_r("GET FILE ->".$post);
+    //$post='{"pers":"hola"}';
+   // $jsonencode=utf8_decode($post);
+   // print_r("UTF encode->".$jsonencode);
+    $json= json_decode($post, true);
+    print_r($json); die();
+
+    switch(json_last_error()) {
+        case JSON_ERROR_NONE:
+            echo ' - Sin errores';
+        break;
+        case JSON_ERROR_DEPTH:
+            echo ' - Excedido tamaño máximo de la pila';
+        break;
+        case JSON_ERROR_STATE_MISMATCH:
+            echo ' - Desbordamiento de buffer o los modos no coinciden';
+        break;
+        case JSON_ERROR_CTRL_CHAR:
+            echo ' - Encontrado carácter de control no esperado';
+        break;
+        case JSON_ERROR_SYNTAX:
+            echo ' - Error de sintaxis, JSON mal formado';
+        break;
+        case JSON_ERROR_UTF8:
+            echo ' - Caracteres UTF-8 malformados, posiblemente codificados de forma incorrecta';
+        break;
+        default:
+            echo ' - Error desconocido';
+        break;
+    }
+
  
     /*   $pers = $request->getParam('pers');
     $nom = $request->getParam('nom');
@@ -121,10 +152,10 @@ $app-> post ('/reserva/nova', function(Request $request, Response $response) use
     $coment = $request->getParam('coment');  */
 
     //$post=$request->getBody();
-    $json = $request->getBody();
+    /* $json = $request->getBody();
     
     $pers = (string)$json->pers;
-    echo $pers;
+    echo $pers; */
 
   /*   $nom = $parseBody['nom'];
     $tel = $parseBody['tel'];
