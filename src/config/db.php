@@ -1,13 +1,7 @@
 <?php
-require 'config.php';
 
-class db{
-    private $dbHost= DB_HOST;
-    private $dbUser = DB_USER;
-    private $dbPass = DB_PASS;
-    private $dbName = DB_NAME;
+    require_once "config.php";
 
-    //conexió
     function getConnection(){
         $db=new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         
@@ -18,4 +12,6 @@ class db{
 
         return $db;
     }
-}
+
+    
+?>
