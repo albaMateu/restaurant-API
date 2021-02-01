@@ -1,3 +1,4 @@
+#n Necessari quan tenim el projecte en una subcarpeta
 RewriteEngine on
 RewriteRule ^$ public/ [L]
 RewriteRule (.*) public/$1 [L]
