@@ -18,5 +18,6 @@ $app->setBasePath("/restaurant-api"); // IMPRESCINDIBLE el que volem que siga la
 $container=$app->getContainer();
 require __DIR__."/Routes.php";
 require __DIR__."/Config.php";
+require __DIR__."/Dependencies.php";
 
 $app->run();
