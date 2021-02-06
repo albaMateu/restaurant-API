@@ -5,8 +5,49 @@ namespace App\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\BaseController;
+use PDOException;
 
 class ReservesController extends BaseController{
+
+
+    public function insertReserva($resquest, $response, $arg){
+        $json= file_get_contents('php://input');
+        $post= json_decode($json, true);
+        
+        $pers= $post['pers'];
+        $sala=$post['sala'];
+        $dia=$post['dia'];
+        $hora=$post['hora'];
+        $coment="insertat des de la web";
+
+        //porta les dades del contenedor que porta la connexió a BD
+        $pdo=$this->container->get('db');
+        $sql="INSERT INTO reserves (pers, dia, hora, sala, coment) 
+        VALUES (:pers, :dia, :hora, :sala, :coment);";
+
+                       
+        try{
+          $query= $pdo->prepare($sql);
+          $query->bindParam(':pers', $pers);
+          $query->bindParam(':dia', $dia);
+          $query->bindParam(':hora', $hora);
+          $query->bindParam(':sala', $sala);
+          $query->bindParam(':coment', $coment);
+          $query->execute(); 
+
+          $message= "Reserva realitzada amb èxit.";
+        }
+        catch(PDOException $err)
+        {
+          // Mostramos un mensaje genérico de error.          
+         $message= "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode();
+        }
+
+        $response->getBody()->write(json_encode($message));
+        return $response;
+        
+    }
+
 
     public function getAll($resquest, $response, $arg){
         //porta les dades del contenedor que porta la connexió a BD
