@@ -12,11 +12,16 @@ class ReservesController extends BaseController{
 
     public function insertReserva($resquest, $response, $arg){
         $json= file_get_contents('php://input');
+        
+         $error= '<script>'.
+         'alert( error del php'. json_encode( var_dump($arg) ) .')'.
+          '</script>';
         $post= json_decode($json, true);
         
         $pers= $post['pers'];
         $sala=$post['sala'];
-        $dia=$post['dia'];
+        /* $dia=$post['dia']; */
+        $dia="2020/12/01";
         $hora=$post['hora'];
         $coment="insertat des de la web";
 
@@ -43,7 +48,7 @@ class ReservesController extends BaseController{
          $message= "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode();
         }
 
-        $response->getBody()->write(json_encode($message));
+        $response->write(json_encode($error));
         return $response;
         
     }
