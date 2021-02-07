@@ -12,16 +12,14 @@ class ReservesController extends BaseController{
 
     public function insertReserva($resquest, $response, $arg){
         $json= file_get_contents('php://input');
-        
-         $error= '<script>'.
-         'alert( error del php'. json_encode( var_dump($arg) ) .')'.
-          '</script>';
+           
+         
         $post= json_decode($json, true);
         
         $pers= $post['pers'];
         $sala=$post['sala'];
-        /* $dia=$post['dia']; */
-        $dia="2020/12/01";
+        $dia=$post['dia'];
+        /* $dia="2020/12/01"; */
         $hora=$post['hora'];
         $coment="insertat des de la web";
 
@@ -40,7 +38,7 @@ class ReservesController extends BaseController{
           $query->bindParam(':coment', $coment);
           $query->execute(); 
 
-          $message= "Reserva realitzada amb èxit.";
+          $message= "Reserva realitzada amb èxit";
         }
         catch(PDOException $err)
         {
@@ -48,7 +46,7 @@ class ReservesController extends BaseController{
          $message= "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode();
         }
 
-        $response->write(json_encode($error));
+        $response->getBody()->write($message);
         return $response;
         
     }
