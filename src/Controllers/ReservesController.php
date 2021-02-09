@@ -10,6 +10,44 @@ use PDOException;
 class ReservesController extends BaseController{
 
 
+    //buscar per hora, data i sala les reserves que hi ha
+    public function taulesOcupades($resquest, $response, array $arg){
+        //en $arg se li tenen que passar dia, sala i hora
+        //porta les dades del contenedor que porta la connexió a BD
+        $pdo=$this->container->get('db');
+        //trau les reserves que estan ocupades(hora de acabar > hora de nova reserva)
+        $sql="SELECT SUM(taules) FROM reserves WHERE dia = :dia AND 
+        sala = :sala AND ADDTIME(hora,'01:45:00')> :hora;";
+        $params=[
+            ":dia"=>$arg['dia'],
+            ":sala"=>$arg['sala'],
+            ":hora"=>$arg['hora'],
+        ];
+        
+        try{
+            $query= $pdo->prepare($sql);
+            $query->execute($params); 
+        }
+        catch(PDOException $err)
+        {
+           // Mostramos un mensaje genérico de error.
+           echo "Error: ejecutando consulta SQL.";
+        }
+
+        if($query->rowCount() > 0){
+            $response->getBody()->write(json_encode($query->fetchAll()));
+        }else{
+            $response="No hi ha taules ocupades per al dia ". date("d/m/Y",$arg["dia"]). 
+            " a les ".date("H:i",$arg["hora"])." en la sala sol·licitada";
+        }
+        return $response
+            ->withHeader('Conten-Type','application/json')
+            ->withStatus(200);
+        ;
+
+    }
+    
+    //insertar reserva a la base de dades
     public function insertReserva($resquest, $response, $arg){
         $json= file_get_contents('php://input');
            
@@ -19,7 +57,6 @@ class ReservesController extends BaseController{
         $pers= $post['pers'];
         $sala=$post['sala'];
         $dia=$post['dia'];
-        /* $dia="2020/12/01"; */
         $hora=$post['hora'];
         $coment="insertat des de la web";
 
