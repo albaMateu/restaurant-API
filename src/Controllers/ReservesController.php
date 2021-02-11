@@ -13,10 +13,15 @@ class ReservesController extends BaseController{
     //buscar per hora, data i sala les reserves que hi ha
     public function taulesOcupades($resquest, $response, array $arg){
         //en $arg se li tenen que passar dia, sala i hora
+        $arg=[
+            "dia"=>'2020-10-10',
+            "sala"=>1,
+            "hora"=>'23:00:00',
+        ];
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
         //trau les reserves que estan ocupades(hora de acabar > hora de nova reserva)
-        $sql="SELECT SUM(taules) FROM reserves WHERE dia = :dia AND 
+        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND 
         sala = :sala AND ADDTIME(hora,'01:45:00')> :hora;";
         $params=[
             ":dia"=>$arg['dia'],
@@ -41,9 +46,8 @@ class ReservesController extends BaseController{
             " a les ".date("H:i",$arg["hora"])." en la sala sol·licitada";
         }
         return $response
-            ->withHeader('Conten-Type','application/json')
-            ->withStatus(200);
-        ;
+            ->withHeader('Conten-Type','application/json') 
+             ->withStatus(200);
 
     }
     
