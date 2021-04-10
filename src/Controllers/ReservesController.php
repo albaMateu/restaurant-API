@@ -6,12 +6,15 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\BaseController;
 use PDOException;
+use utilities;
 
-class ReservesController extends BaseController{
+class ReservesController extends BaseController
+{
 
 
     //buscar per hora, data i sala les reserves que hi ha
-    public function taulesOcupades($resquest, $response, array $arg){
+    public function taulesOcupades($resquest, $response, array $arg)
+    {
         //en $arg se li tenen que passar dia, sala i hora
         $arg=[
             "dia"=>'2020-10-10',
@@ -29,30 +32,27 @@ class ReservesController extends BaseController{
             ":hora"=>$arg['hora'],
         ];
         
-        try{
+        try {
             $query= $pdo->prepare($sql);
-            $query->execute($params); 
-        }
-        catch(PDOException $err)
-        {
-           // Mostramos un mensaje genérico de error.
-           echo "Error: ejecutando consulta SQL.";
+            $query->execute($params);
+        } catch (PDOException $err) {
+            // Mostramos un mensaje genérico de error.
+            echo "Error: ejecutando consulta SQL.";
         }
 
-        if($query->rowCount() > 0){
-            $response->getBody()->write(json_encode($query->fetchAll()));
-        }else{
-            $response="No hi ha taules ocupades per al dia ". date("d/m/Y",$arg["dia"]). 
-            " a les ".date("H:i",$arg["hora"])." en la sala sol·licitada";
+        if ($query->rowCount() > 0) {
+            $response->getBody()->write(json_encode($query->fetchAll()))->withStatus(200);
+        } else {
+            $response="No hi ha taules ocupades per al dia ". date("d/m/Y", $arg["dia"]).
+            " a les ".date("H:i", $arg["hora"])." en la sala sol·licitada";
         }
         return $response
-            ->withHeader('Conten-Type','application/json') 
-             ->withStatus(200);
-
+            ->withHeader('Conten-Type', 'application/json');
     }
     
     //insertar reserva a la base de dades
-    public function insertReserva($resquest, $response, $arg){
+    public function insertReserva($resquest, $response, $arg)
+    {
         $json= file_get_contents('php://input');
            
          
@@ -62,7 +62,7 @@ class ReservesController extends BaseController{
         $sala=$post['sala'];
         $dia=$post['dia'];
         $hora=$post['hora'];
-        $coment="insertat des de la web";
+        $coment="";
 
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
@@ -70,46 +70,50 @@ class ReservesController extends BaseController{
         VALUES (:pers, :dia, :hora, :sala, :coment);";
 
                        
-        try{
-          $query= $pdo->prepare($sql);
-          $query->bindParam(':pers', $pers);
-          $query->bindParam(':dia', $dia);
-          $query->bindParam(':hora', $hora);
-          $query->bindParam(':sala', $sala);
-          $query->bindParam(':coment', $coment);
-          $query->execute(); 
+        try {
+            $query= $pdo->prepare($sql);
+            $query->bindParam(':pers', $pers);
+            $query->bindParam(':dia', $dia);
+            $query->bindParam(':hora', $hora);
+            $query->bindParam(':sala', $sala);
+            $query->bindParam(':coment', $coment);
+            $query->execute();
 
-          $message= "Reserva realitzada amb èxit";
+            $message= "Reserva realitzada amb èxit";
+            $code = 200;
+        } catch (PDOException $err) {
+            // Mostramos un mensaje genérico de error.
+            $code= $err->getCode();
+            $message= "No s'ha pogut insertar la reserva.";
+            //mete error en log.
+            utilities::logError($code, "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
-        catch(PDOException $err)
-        {
-          // Mostramos un mensaje genérico de error.          
-         $message= "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode();
-        }
-
-        $response->getBody()->write($message);
+       
+        //devuelve el array encode con json
+        $result=utilities::datosResult($code, $message);
+        //el encode es precis ahi, sino nova
+        $response->getBody()->write(json_encode($result));
         return $response;
-        
     }
 
 
-    public function getAll($resquest, $response, $arg){
+    public function getAll($resquest, $response, $arg)
+    {
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
         $sql="SELECT * FROM reserves;";
         $query=$pdo->query($sql);
-        if($query->rowCount() > 0){
+        if ($query->rowCount() > 0) {
             $response->getBody()->write(json_encode($query->fetchAll()));
-        }else{
+        } else {
             $response="No existeixen reserves en la base de dades";
         }
-        return $response
-            ->withHeader('Conten-Type','application/json')
-            ->withStatus(200);
+        return $response->withHeader('Conten-Type', 'application/json');
         ;
     }
 
-    public function getReserva($resquest, $response, $arg){
+    public function getReserva($resquest, $response, $arg)
+    {
         $id= $resquest->getAttribute('id');
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
@@ -118,26 +122,21 @@ class ReservesController extends BaseController{
         $params=[":id"=>$id];
         $query= $pdo->prepare($sql);
         
-        try{
-            $query->execute($params); 
-        }
-        catch(PDOException $err)
-        {
-           // Mostramos un mensaje genérico de error.
-           echo "Error: ejecutando consulta SQL.";
+        try {
+            $query->execute($params);
+        } catch (PDOException $err) {
+            // Mostramos un mensaje genérico de error.
+            echo "Error: ejecutando consulta SQL.";
         }
 
-        if($query->rowCount() > 0){
+        if ($query->rowCount() > 0) {
             $response->getBody()->write(json_encode($query->fetchAll()));
-        }else{
+        } else {
             $response="No existeixen reserves en la base de dades";
         }
         return $response
-            ->withHeader('Conten-Type','application/json')
+            ->withHeader('Conten-Type', 'application/json')
             ->withStatus(200);
         ;
     }
-
-
-
 }
