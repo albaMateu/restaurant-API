@@ -59,15 +59,19 @@ class ReservesController extends BaseController
         $post= json_decode($json, true);
         
         $pers= $post['pers'];
-        $sala=$post['sala'];
         $dia=$post['dia'];
         $hora=$post['hora'];
-        $coment="";
+        $taules=$post['taules'];
+        $sala=$post['sala'];
+        $nom=$post['nom'];
+        $tel=$post['tel'];
+        $email=$post['email'];
+        $coment=$post['coment'];
 
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
-        $sql="INSERT INTO reserves (pers, dia, hora, sala, coment) 
-        VALUES (:pers, :dia, :hora, :sala, :coment);";
+        $sql="INSERT INTO reserves (pers, dia, hora, taules, sala, nom, tel, email, coment) 
+        VALUES (:pers, :dia, :hora, :taules, :sala, :nom, :tel, :email, :coment);";
 
                        
         try {
@@ -75,7 +79,11 @@ class ReservesController extends BaseController
             $query->bindParam(':pers', $pers);
             $query->bindParam(':dia', $dia);
             $query->bindParam(':hora', $hora);
+            $query->bindParam(':taules', $taules);
             $query->bindParam(':sala', $sala);
+            $query->bindParam(':nom', $nom);
+            $query->bindParam(':tel', $tel);
+            $query->bindParam(':email', $email);
             $query->bindParam(':coment', $coment);
             $query->execute();
 
