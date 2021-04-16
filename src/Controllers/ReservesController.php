@@ -58,15 +58,15 @@ class ReservesController extends BaseController
          
         $post= json_decode($json, true);
         
-        $pers= $post['pers'];
+        $pers= htmlspecialchars($post['pers']);
         $dia=$post['dia'];
         $hora=$post['hora'];
         $taules=$post['taules'];
         $sala=$post['sala'];
-        $nom=$post['nom'];
+        $nom= htmlspecialchars($post['nom']);
         $tel=$post['tel'];
-        $email=$post['email'];
-        $coment=$post['coment'];
+        $email=htmlspecialchars($post['email']);
+        $coment=htmlspecialchars($post['coment']);
 
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
