@@ -13,45 +13,39 @@ class ReservesController extends BaseController
 
 
     //buscar per hora, data i sala les reserves que hi ha
-    public function taulesOcupades($resquest, $response, array $arg)
+    public function taulesOcupades($request, $response, $args)
     {
-        //en $arg se li tenen que passar dia, sala i hora
-        $arg=[
-            "dia"=>'2020-10-10',
-            "sala"=>1,
-            "hora"=>'23:00:00',
-        ];
+        $json= file_get_contents('php://input');
+                   
+        $args= json_decode($json, true);
+
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
         //trau les reserves que estan ocupades(hora de acabar > hora de nova reserva)
-        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND 
-        sala = :sala AND ADDTIME(hora,'01:45:00')> :hora;";
-        $params=[
-            ":dia"=>$arg['dia'],
-            ":sala"=>$arg['sala'],
-            ":hora"=>$arg['hora'],
-        ];
-        
+        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND sala = :sala AND ADDTIME(hora, '01:45') > :hora";
+             
         try {
             $query= $pdo->prepare($sql);
-            $query->execute($params);
+            $query->bindParam(':dia', $args['dia']);
+            $query->bindParam(':sala', $args['sala']);
+            $query->bindParam(':hora', $args['hora']);
+            $query->execute();
         } catch (PDOException $err) {
-            // Mostramos un mensaje genérico de error.
-            echo "Error: ejecutando consulta SQL.";
+            //mete error en log.
+            utilities::logError($err->getCode(), "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
 
-        if ($query->rowCount() > 0) {
-            $response->getBody()->write(json_encode($query->fetchAll()))->withStatus(200);
-        } else {
-            $response="No hi ha taules ocupades per al dia ". date("d/m/Y", $arg["dia"]).
-            " a les ".date("H:i", $arg["hora"])." en la sala sol·licitada";
+        $ocupades= $query->fetchColumn();
+
+        if (is_null($ocupades)) {
+            $ocupades = 0;
         }
-        return $response
-            ->withHeader('Conten-Type', 'application/json');
+        $response->getBody()->write(json_encode($ocupades));
+        return $response;
     }
     
     //insertar reserva a la base de dades
-    public function insertReserva($resquest, $response, $arg)
+    public function insertReserva($resquest, $response)
     {
         $json= file_get_contents('php://input');
            
@@ -97,7 +91,7 @@ class ReservesController extends BaseController
             utilities::logError($code, "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
        
-        //devuelve el array encode con json
+        //devuelve el array
         $result=utilities::datosResult($code, $message);
         //el encode es precis ahi, sino nova
         $response->getBody()->write(json_encode($result));
