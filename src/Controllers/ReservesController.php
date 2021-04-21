@@ -35,12 +35,18 @@ class ReservesController extends BaseController
             utilities::logError($err->getCode(), "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
 
-        $ocupades= $query->fetchColumn();
+        $ocupades= (int)$query->fetchColumn();
 
         if (is_null($ocupades)) {
-            $ocupades = 0;
+            $ocupades = (int) 0;
         }
-        $response->getBody()->write(json_encode($ocupades));
+
+        /* echo gettype($ocupades); //torna integer */
+
+        $devuelve= array(
+            "ocup"=> $ocupades
+        );
+        $response->getBody()->write(json_encode($devuelve));
         return $response;
     }
     
