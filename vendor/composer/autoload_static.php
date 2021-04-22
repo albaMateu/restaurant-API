@@ -28,6 +28,7 @@ class ComposerStaticInit3bf5f019415897823b833e0b8c9c6756
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'PhpDocReader\\' => 13,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'O' => 
         array (
@@ -86,6 +87,10 @@ class ComposerStaticInit3bf5f019415897823b833e0b8c9c6756
         'PhpDocReader\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-di/phpdoc-reader/src/PhpDocReader',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Opis\\Closure\\' => 
         array (

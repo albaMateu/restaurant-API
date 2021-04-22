@@ -71,7 +71,11 @@ class ReservesController extends BaseController
         $nom= htmlspecialchars($post['nom']);
         $tel=$post['tel'];
         $email=htmlspecialchars($post['email']);
-        $coment=htmlspecialchars($post['coment']);
+        if (isset($post['coment'])) {
+            $coment=htmlspecialchars($post['coment']);
+        } else {
+            $coment= "";
+        }
 
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
