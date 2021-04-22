@@ -5,8 +5,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class utilities
 {
-    protected $container;
-
     public static function logError($errorCode, $errorMessage)
     {
         error_log(date("d-m-Y H:i:s - ") . $errorCode . ":" . $errorMessage . "\n", 3, "C:/xampp/htdocs/Restaurant-API/logs/errors.log");
@@ -27,10 +25,9 @@ class utilities
         return $result;
     }
 
-    public function sendEmail($Missatge, $assumpte, $destinatari, $nom, ContainerInterface $c)
+    public static function sendEmail($Missatge, $assumpte, $destinatari, $nom, $container)
     {
-        $this->container= $c;
-        $email=$this->container->get('correu');
+        $email=$container->get('correu');
         $mail = new PHPMailer;
 
  
