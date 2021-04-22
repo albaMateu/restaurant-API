@@ -18,6 +18,7 @@ class ReservesController extends BaseController
         $json= file_get_contents('php://input');
                    
         $post= json_decode($json, true);
+        var_dump($post);
         
         $date= new DateTime($post['dia']);
         $dia= $date->format('d-m-Y');
@@ -46,6 +47,7 @@ class ReservesController extends BaseController
         $result= array(
             "envio" => $exit
         );
+        var_dump($result);
         //el encode es precis ahi, sino nova
         $response->getBody()->write(json_encode($result));
         return $response;
@@ -162,7 +164,7 @@ class ReservesController extends BaseController
         } else {
             $response="No existeixen reserves en la base de dades";
         }
-        return $response->withHeader('Conten-Type', 'application/json');
+        return $response;
         ;
     }
 
@@ -190,8 +192,6 @@ class ReservesController extends BaseController
             $response="No existeixen reserves en la base de dades";
         }
         return $response
-            ->withHeader('Conten-Type', 'application/json')
-            ->withStatus(200);
         ;
     }
 }
