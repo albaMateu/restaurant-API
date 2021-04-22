@@ -33,3 +33,16 @@ $container -> set('horari', function (ContainerInterface $c) {
     );
     return $hores;
 });
+
+$container -> set('correu', function (ContainerInterface $c) {
+    $dades=$c->get('dades_correu');
+
+    $mail= array(
+        'SMTP_mail'=> $dades->SMTP_mail,
+        'SMTP_pwd'=> $dades->SMTP_pwd,
+        'SMTP_host' => $dades->SMTP_host,
+        'SMTP_from' =>$dades->SMTP_from,
+        'SMTP_name' => $dades -> SMTP_name
+    );
+    return $mail;
+});

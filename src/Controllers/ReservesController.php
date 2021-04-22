@@ -22,11 +22,8 @@ class ReservesController extends BaseController
         //porta les dades del contenedor que porta la connexió a BD
         $pdo=$this->container->get('db');
 
-        //porta les dades de l'horari que estan al contenedor
-        $horari=$this->container->get('horari');
-
-        //trau les reserves que estan ocupades(>= perque volem saber quantes hi han ocupades a l'hora de la reserva)
-        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND sala = :sala AND ADDTIME(hora, '01:45') > :hora ";
+        //trau les taules que estan ocupades a l'hora de la reserva
+        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND sala = :sala AND :hora BETWEEN hora AND ADDTIME(hora, '01:45') ";
              
         try {
             $query= $pdo->prepare($sql);
@@ -114,6 +111,7 @@ class ReservesController extends BaseController
     }
 
 
+    //torna totes les reserves - SENSE US
     public function getAll($resquest, $response, $arg)
     {
         //porta les dades del contenedor que porta la connexió a BD
@@ -129,6 +127,7 @@ class ReservesController extends BaseController
         ;
     }
 
+    //torna una reserva per id - SENSE US
     public function getReserva($resquest, $response, $arg)
     {
         $id= $resquest->getAttribute('id');
