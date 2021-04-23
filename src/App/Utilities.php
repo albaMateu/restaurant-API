@@ -25,24 +25,22 @@ class utilities
         return $result;
     }
 
-    public static function sendEmail($Missatge, $assumpte, $destinatari, $nom, $container)
+    public static function sendEmail($Missatge, $assumpte, $destinatari, $nom)
     {
-        $email=$container->get('correu');
         $mail = new PHPMailer;
-
  
         /** Configurar SMTP **/
         $mail->isSMTP();                                      // Indicamos que use SMTP
-        $mail->Host = $email->SMTP_host;  // Indicamos los servidores SMTP
+        $mail->Host = SMTP_host;  // Indicamos los servidores SMTP
         $mail->SMTPAuth = true;                               // Habilitamos la autenticación SMTP
-        $mail->Username = $email->SMTP_mail;                 // SMTP username
-        $mail->Password = $email->SMTP_pwd;                           // SMTP password
+        $mail->Username = SMTP_mail;                 // SMTP username
+        $mail->Password = SMTP_pwd;                           // SMTP password
         $mail->SMTPSecure = 'tls';                            // Habilitar encriptación TLS o SSL
         $mail->Port = 587;                                    // TCP port
 
         /** Configurar cabeceras del mensaje **/
-        $mail->From = $email->SMTP_from;                       // Correo del remitente
-        $mail->FromName = $email->SMTP_name;           // Nombre del remitente
+        $mail->From = SMTP_from;                       // Correo del remitente
+        $mail->FromName = SMTP_name;           // Nombre del remitente
         $mail->Subject = $assumpte;                // Asunto
 
         /** Incluir destinatarios. El nombre es opcional **/
@@ -65,18 +63,16 @@ class utilities
 
         $mail->AltBody = $Missatge;
 
+        $mail->CharSet='UTF-8';
+
         /** Para que use el lenguaje español **/
         $mail->setLanguage('es');
 
         /** Enviar mensaje... **/
-        if (!$mail->send()) {
-            //mete error en log.
-            utilities::logError($mail->ErrorCode, $mail->ErrorInfo);
-            echo 'Mailer Error: mirar log';
-            return false;
-        } else {
-            echo 'Mensaje enviado correctamente';
-            return true;
+        $result= $mail->send();
+        if (!$result) {
+            utilities::logError(400, $mail->ErrorInfo);
         }
+        return $result;
     }
 }

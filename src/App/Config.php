@@ -24,13 +24,8 @@ $container->set('horari_rest', function () {
     ];
 });
 
-//dades per al SMTP
-$container->set('dades_correu', function () {
-    return (object)[
-        "SMTP_mail" =>"info@vivacemusica.es",
-        "SMTP_pwd" =>"VivaceMusica.2014",
-        "SMTP_host" =>"smtp.ionos.es",
-        "SMTP_from" =>"no-reply@restirestaurant.es",
-        "SMTP_name" => "Resti Restaurant"
-    ];
-});
+define("SMTP_mail", "web@vivacemusica.es");
+define("SMTP_pwd", "VivaceMusica.2014");
+define("SMTP_host", "smtp.ionos.es");
+define("SMTP_from", "web@vivacemusica.es");
+define("SMTP_name", "Resti Restaurant");

@@ -18,8 +18,7 @@ class ReservesController extends BaseController
         $json= file_get_contents('php://input');
                    
         $post= json_decode($json, true);
-        var_dump($post);
-        
+                
         $date= new DateTime($post['dia']);
         $dia= $date->format('d-m-Y');
 
@@ -31,9 +30,9 @@ class ReservesController extends BaseController
          </head>
          <body>
            <p>Hola '.$post['nom'].',</p>
-           <p>Gràcies per elegir Resti Restaurant. Tenim moltes ganes de rebre-vos.</p>
+           <p>Gràcies per elegir Resti Restaurant.</p>
            <p> Ací estan els detalls de la teua reserva:</p>
-           <p>Reserva  el dia '.$dia.' a les '.$post['hora'].' per a '.$post['pers'].' en el/la '.$post['sala'].'.</p>
+           <p>Reserva  el dia '.$dia.' a les '.$post['hora'].' per a '.$post['pers'].' persones.</p>
            <p>Si necessites fer canvis crida al telèfon o al mail que trobaràs a la nostra web.</p>
            <br>
            <p>Tenim moltes ganes de rebre-vos prompte!</p>
@@ -42,12 +41,16 @@ class ReservesController extends BaseController
          </html>
          ';
 
-        $exit= utilities::sendEmail($missatge, $assumpte, $post['email'], $post['nom'], $this->container);
-
+        try {
+            $exit= utilities::sendEmail($missatge, $assumpte, $post['email'], $post['nom']);
+        } catch (\Throwable $err) {
+            utilities::logError($err->getCode(), "Falló el envío de mail: (" . $err->getMessage() . ") " . $err->getCode());
+        }
+         
         $result= array(
             "envio" => $exit
         );
-        var_dump($result);
+
         //el encode es precis ahi, sino nova
         $response->getBody()->write(json_encode($result));
         return $response;
@@ -97,8 +100,7 @@ class ReservesController extends BaseController
     public function insertReserva($resquest, $response)
     {
         $json= file_get_contents('php://input');
-           
-         
+                    
         $post= json_decode($json, true);
         
         $pers= htmlspecialchars($post['pers']);
