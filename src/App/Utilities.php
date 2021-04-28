@@ -9,21 +9,21 @@ class utilities
     {
         error_log(date("d-m-Y H:i:s - ") . $errorCode . ":" . $errorMessage . "\n", 3, "C:/xampp/htdocs/Restaurant-API/logs/errors.log");
     }
-
-    public static function datosResult($code, $message)
-    {
-        if ($code == 200) {
-            $status = "ENHORABONA!";
-        } else {
-            $status = "Oooh... ";
-        }
-        $result = array(
-            "code" => $code,
-            "message" => $message,
-            "estat" => $status
-        );
-        return $result;
-    }
+    /*
+        public static function datosResult($code, $message)
+        {
+            if ($code == 200) {
+                $status = "ENHORABONA!";
+            } else {
+                $status = "Oooh... ";
+            }
+            $result = array(
+                "code" => $code,
+                "message" => $message,
+                "estat" => $status
+            );
+            return $result;
+        } */
 
     public static function sendEmail($Missatge, $assumpte, $destinatari, $nom)
     {

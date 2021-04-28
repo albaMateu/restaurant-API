@@ -136,18 +136,20 @@ class ReservesController extends BaseController
             $query->bindParam(':coment', $coment);
             $query->execute();
 
-            $message= "Reserva realitzada amb èxit";
             $code = 200;
         } catch (PDOException $err) {
             // Mostramos un mensaje genérico de error.
             $code= $err->getCode();
-            $message= "No s'ha pogut insertar la reserva.";
             //mete error en log.
             utilities::logError($code, "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
        
         //devuelve el array
-        $result=utilities::datosResult($code, $message);
+        
+        $result= array(
+            "code" => $code
+        );
+
         //el encode es precis ahi, sino nova
         $response->getBody()->write(json_encode($result));
         return $response;
