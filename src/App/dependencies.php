@@ -20,6 +20,7 @@ $container -> set('db', function (ContainerInterface $c) {
     return new PDO($dsn, $user, $pass, $opt); //conexio
 });
 
+
 // ens porta el contenedor general les dades de l'horari
 $container -> set('horari', function (ContainerInterface $c) {
     $horari=$c->get('horari_rest');
