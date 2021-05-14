@@ -24,6 +24,9 @@ $container->set('horari_rest', function () {
     ];
 });
 
+
+/* hi ha que posar un email real perque sinó no envia emails */
+
 define("SMTP_mail", "web@vivacemusica.es");
 define("SMTP_pwd", "VivaceMusica.2014");
 define("SMTP_host", "smtp.ionos.es");
