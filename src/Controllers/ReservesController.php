@@ -15,24 +15,24 @@ class ReservesController extends BaseController
     //enviar email-reb params per post (email,nom)
     public function confirmEmail($request, $response)
     {
-        $json= file_get_contents('php://input');
-                   
-        $post= json_decode($json, true);
-                
-        $date= new DateTime($post['dia']);
-        $dia= $date->format('d-m-Y');
+        $json = file_get_contents('php://input');
 
-        $assumpte= "La teua reserva en Resti Restaurant està confirmada";
-        $missatge='
+        $post = json_decode($json, true);
+
+        $date = new DateTime($post['dia']);
+        $dia = $date->format('d-m-Y');
+
+        $assumpte = "La teua reserva en Resti Restaurant està confirmada";
+        $missatge = '
         <html>
          <head>
            <title>Resti Restaurant</title>
          </head>
          <body>
-           <p>Hola '.$post['nom'].',</p>
+           <p>Hola ' . $post['nom'] . ',</p>
            <p>Gràcies per elegir Resti Restaurant.</p>
            <p> Ací estan els detalls de la teua reserva:</p>
-           <p>Reserva  el dia '.$dia.' a les '.$post['hora'].' per a '.$post['pers'].' persones.</p>
+           <p>Reserva  el dia ' . $dia . ' a les ' . $post['hora'] . ' per a ' . $post['pers'] . ' persones.</p>
            <p>Si necessites fer canvis crida al telèfon o al mail que trobaràs a la nostra web.</p>
            <br>
            <p>Tenim moltes ganes de rebre-vos prompte!</p>
@@ -42,12 +42,13 @@ class ReservesController extends BaseController
          ';
 
         try {
-            $exit= utilities::sendEmail($missatge, $assumpte, $post['email'], $post['nom']);
+            /* $exit= utilities::sendEmail($missatge, $assumpte, $post['email'], $post['nom']); */
+            $exit = true;
         } catch (\Throwable $err) {
             utilities::logError($err->getCode(), "Falló el envío de mail: (" . $err->getMessage() . ") " . $err->getCode());
         }
-         
-        $result= array(
+
+        $result = array(
             "envio" => $exit
         );
 
@@ -59,18 +60,18 @@ class ReservesController extends BaseController
     //buscar per hora, data i sala les reserves que hi ha
     public function taulesOcupades($request, $response, $args)
     {
-        $json= file_get_contents('php://input');
-                   
-        $args= json_decode($json, true);
+        $json = file_get_contents('php://input');
+
+        $args = json_decode($json, true);
 
         //porta les dades del contenedor que porta la connexió a BD
-        $pdo=$this->container->get('db');
+        $pdo = $this->container->get('db');
 
         //trau les taules que estan ocupades a l'hora de la reserva
-        $sql="SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND sala = :sala AND :hora BETWEEN hora AND ADDTIME(hora, '01:45') ";
-             
+        $sql = "SELECT SUM(taules) as 'ocupades' FROM reserves WHERE dia = :dia AND sala = :sala AND :hora BETWEEN hora AND ADDTIME(hora, '01:45') ";
+
         try {
-            $query= $pdo->prepare($sql);
+            $query = $pdo->prepare($sql);
             $query->bindParam(':dia', $args['dia']);
             $query->bindParam(':sala', $args['sala']);
             $query->bindParam(':hora', $args['hora']);
@@ -80,7 +81,7 @@ class ReservesController extends BaseController
             utilities::logError($err->getCode(), "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
 
-        $ocupades= (int)$query->fetchColumn();
+        $ocupades = (int)$query->fetchColumn();
 
         if (is_null($ocupades)) {
             $ocupades = (int) 0;
@@ -88,43 +89,43 @@ class ReservesController extends BaseController
 
         /* echo "server". $horari['final_v']; */
 
-        $devuelve= array(
-            "ocup"=> $ocupades
+        $devuelve = array(
+            "ocup" => $ocupades
         );
 
         $response->getBody()->write(json_encode($devuelve));
         return $response;
     }
-    
+
     //insertar reserva a la base de dades
     public function insertReserva($resquest, $response)
     {
-        $json= file_get_contents('php://input');
-                    
-        $post= json_decode($json, true);
-        
-        $pers= htmlspecialchars($post['pers']);
-        $dia=$post['dia'];
-        $hora=$post['hora'];
-        $taules=$post['taules'];
-        $sala=$post['sala'];
-        $nom= htmlspecialchars($post['nom']);
-        $tel=$post['tel'];
-        $email=htmlspecialchars($post['email']);
+        $json = file_get_contents('php://input');
+
+        $post = json_decode($json, true);
+
+        $pers = htmlspecialchars($post['pers']);
+        $dia = $post['dia'];
+        $hora = $post['hora'];
+        $taules = $post['taules'];
+        $sala = $post['sala'];
+        $nom = htmlspecialchars($post['nom']);
+        $tel = $post['tel'];
+        $email = htmlspecialchars($post['email']);
         if (isset($post['coment'])) {
-            $coment=htmlspecialchars($post['coment']);
+            $coment = htmlspecialchars($post['coment']);
         } else {
-            $coment= "";
+            $coment = "";
         }
 
         //porta les dades del contenedor que porta la connexió a BD
-        $pdo=$this->container->get('db');
-        $sql="INSERT INTO reserves (pers, dia, hora, taules, sala, nom, tel, email, coment) 
+        $pdo = $this->container->get('db');
+        $sql = "INSERT INTO reserves (pers, dia, hora, taules, sala, nom, tel, email, coment) 
         VALUES (:pers, :dia, :hora, :taules, :sala, :nom, :tel, :email, :coment);";
 
-                       
+
         try {
-            $query= $pdo->prepare($sql);
+            $query = $pdo->prepare($sql);
             $query->bindParam(':pers', $pers);
             $query->bindParam(':dia', $dia);
             $query->bindParam(':hora', $hora);
@@ -134,19 +135,22 @@ class ReservesController extends BaseController
             $query->bindParam(':tel', $tel);
             $query->bindParam(':email', $email);
             $query->bindParam(':coment', $coment);
-            $query->execute();
+            /* $result=$query->execute(); */
+            $result = true;
 
-            $code = 200;
+            if ($result) {
+                $code = 200;
+            }
         } catch (PDOException $err) {
             // Mostramos un mensaje genérico de error.
-            $code= $err->getCode();
+            $code = $err->getCode();
             //mete error en log.
             utilities::logError($code, "Falló la ejecución: (" . $err->getMessage() . ") " . $err->getCode());
         }
-       
+
         //devuelve el array
-        
-        $result= array(
+
+        $result = array(
             "code" => $code
         );
 
@@ -160,29 +164,28 @@ class ReservesController extends BaseController
     public function getAll($resquest, $response, $arg)
     {
         //porta les dades del contenedor que porta la connexió a BD
-        $pdo=$this->container->get('db');
-        $sql="SELECT * FROM reserves;";
-        $query=$pdo->query($sql);
+        $pdo = $this->container->get('db');
+        $sql = "SELECT * FROM reserves;";
+        $query = $pdo->query($sql);
         if ($query->rowCount() > 0) {
             $response->getBody()->write(json_encode($query->fetchAll()));
         } else {
-            $response="No existeixen reserves en la base de dades";
+            $response = "No existeixen reserves en la base de dades";
         }
-        return $response;
-        ;
+        return $response;;
     }
 
     //torna una reserva per id - SENSE US
     public function getReserva($resquest, $response, $arg)
     {
-        $id= $resquest->getAttribute('id');
+        $id = $resquest->getAttribute('id');
         //porta les dades del contenedor que porta la connexió a BD
-        $pdo=$this->container->get('db');
-        $sql="SELECT * FROM reserves WHERE id= :id;";
-    
-        $params=[":id"=>$id];
-        $query= $pdo->prepare($sql);
-        
+        $pdo = $this->container->get('db');
+        $sql = "SELECT * FROM reserves WHERE id= :id;";
+
+        $params = [":id" => $id];
+        $query = $pdo->prepare($sql);
+
         try {
             $query->execute($params);
         } catch (PDOException $err) {
@@ -193,9 +196,8 @@ class ReservesController extends BaseController
         if ($query->rowCount() > 0) {
             $response->getBody()->write(json_encode($query->fetchAll()));
         } else {
-            $response="No existeixen reserves en la base de dades";
+            $response = "No existeixen reserves en la base de dades";
         }
-        return $response
-        ;
+        return $response;
     }
 }

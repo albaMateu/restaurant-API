@@ -7,7 +7,10 @@ class utilities
 {
     public static function logError($errorCode, $errorMessage)
     {
+        /* local */
         error_log(date("d-m-Y H:i:s - ") . $errorCode . ":" . $errorMessage . "\n", 3, "C:/xampp/htdocs/Restaurant-API/logs/errors.log");
+        /* server */
+        /* error_log(date("d-m-Y H:i:s - ") . $errorCode . ":" . $errorMessage . "\n", 3, "/var/www/Restaurant-API/logs/errors.log"); */
     }
     /*
         public static function datosResult($code, $message)
@@ -28,7 +31,7 @@ class utilities
     public static function sendEmail($Missatge, $assumpte, $destinatari, $nom)
     {
         $mail = new PHPMailer;
- 
+
         /** Configurar SMTP **/
         $mail->isSMTP();                                      // Indicamos que use SMTP
         $mail->Host = SMTP_host;  // Indicamos los servidores SMTP
@@ -63,13 +66,13 @@ class utilities
 
         $mail->AltBody = $Missatge;
 
-        $mail->CharSet='UTF-8';
+        $mail->CharSet = 'UTF-8';
 
         /** Para que use el lenguaje español **/
         $mail->setLanguage('es');
 
         /** Enviar mensaje... **/
-        $result= $mail->send();
+        $result = $mail->send();
         if (!$result) {
             utilities::logError(400, $mail->ErrorInfo);
         }
