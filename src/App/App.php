@@ -19,9 +19,9 @@ $app->setBasePath("/");
 }); */
 
 $container = $app->getContainer();
+require __DIR__ . "/Dependencies.php";
 require __DIR__ . "/Routes.php";
 require __DIR__ . "/Config.php";
-require __DIR__ . "/Dependencies.php";
 require __DIR__ . "/Utilities.php";
 
 $app->run();
