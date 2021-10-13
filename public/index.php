@@ -10,4 +10,4 @@ if ($method == "OPTIONS") {
 }
 
 error_log("TEXT ESCRIT PER MI " . __DIR__ . "../src/App/App.php");
-require __DIR__ . "../src/App/App.php";
+require __DIR__ . "/../src/App/App.php";
