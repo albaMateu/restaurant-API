@@ -9,5 +9,5 @@ if ($method == "OPTIONS") {
 	die();
 }
 
-error_log("TEXT ESCRIT PER MI " . __DIR__ . "../src/App/App.php");
-require __DIR__ . "../src/App/App.php";
+
+require  "../src/App/App.php";
