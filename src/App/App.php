@@ -8,10 +8,9 @@ $container_aux = new \DI\Container();
 AppFactory::setContainer($container_aux);
 
 $app = AppFactory::create();
-/* localhost */
+/* per a localhost (server no perque el projecte no esta en subcarpeta) */
 /* $app->setBasePath("/restaurant-api"); */ // IMPRESCINDIBLE el que volem que siga la URL base del projecte (en este cas hem omitit la carpeta public)
-/* server */
-/* $app->setBasePath("/"); */
+
 
 /* $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello world!");
