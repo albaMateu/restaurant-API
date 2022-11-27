@@ -174,12 +174,8 @@ class UsersController extends BaseController
     public function getUserByEmail($resquest, $response, $email)
     {
         $exist = false;
-        //$json = file_get_contents('php://input');
 
-        //$email = json_decode($json, true);
-        //$email = $resquest->getAttribute('email');
-
-        $email = $_POST['email'];
+        $email = file_get_contents('php://input');
 
         //porta les dades del contenedor que porta la connexió a BD
         $pdo = $this->container->get('db');
@@ -202,10 +198,11 @@ class UsersController extends BaseController
 
 
         $result = array(
-            "exist" => $exist
+            "exist" => $exist,
+            "mail" => $email
         );
 
-        //el encode es precis ahi, sino no va
+        //transforma array a json
         $response->getBody()->write(json_encode($result));
         return $response;
     }
