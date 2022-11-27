@@ -13,7 +13,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/user/register', 'App\Controllers\UsersController:register');
     $group->get('/user/token', 'App\Controllers\UsersController:generateToken');
     $group->post('/user/token', 'App\Controllers\UsersController:getToken');
-    $group->get('/user/email/{email}', 'App\Controllers\UsersController:getUserByEmail');
+    $group->post('/user/email', 'App\Controllers\UsersController:getUserByEmail');
 
     /* estes encara no estan fetes */
     $group->get('/user/{id}', 'App\Controllers\UsersController:getUser');
