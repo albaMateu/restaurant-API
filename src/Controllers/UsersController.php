@@ -174,11 +174,13 @@ class UsersController extends BaseController
     public function getUserByEmail($resquest, $response, $email)
     {
         $exist = false;
-        $json = file_get_contents('php://input');
+        //$json = file_get_contents('php://input');
 
-        $email = json_decode($json, true);
-        // $email = $resquest->getAttribute('email');
-        // echo $email;
+        //$email = json_decode($json, true);
+        //$email = $resquest->getAttribute('email');
+
+        $email = $_POST['email'];
+
         //porta les dades del contenedor que porta la connexió a BD
         $pdo = $this->container->get('db');
         $sql = "SELECT * FROM usuaris WHERE email= :email;";
