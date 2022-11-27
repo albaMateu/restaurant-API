@@ -175,6 +175,7 @@ class UsersController extends BaseController
     {
         $exist = false;
 
+        //se usa eso en vez de $_POST porque los datos llegan en texto en body y no por un formulario
         $email = file_get_contents('php://input');
 
         //porta les dades del contenedor que porta la connexió a BD
